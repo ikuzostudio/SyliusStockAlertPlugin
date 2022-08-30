@@ -1,5 +1,5 @@
 {
-    "name": "ikuzo/stock-alert-plugin",
+    "name": "ikuzostudio/stock-alert-plugin",
     "type": "sylius-plugin",
     "description": "Stock Alert implementation for Sylius.",
     "keywords": [
