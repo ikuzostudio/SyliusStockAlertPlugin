@@ -1,0 +1,16 @@
+ikuzo_stock_alert:
+  ui:
+    stock_alert: Alert me when back in stock
+    stock_alerts: Stock alerts
+  form:
+    title: Stock Alert - Configuration
+    active: Activated
+    items_before_sent: Quantity before sending alert
+  product:
+    form_action: Alert me when back in stock
+  menu:
+    stock_alert:
+      label: Stock alerts
+  grid:
+    stock_alert:
+      subheader: Stock alerts listing

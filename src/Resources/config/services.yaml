@@ -1,0 +1,48 @@
+services:
+  ikuzo_stock_alert.controller.subscription:
+    class: Ikuzo\SyliusStockAlertPlugin\Controller\SubscriptionController
+    tags: ['controller.service_arguments']
+    calls:
+      - [ setContainer, [ '@service_container' ] ]
+    arguments:
+      - '@sylius.context.channel.cached'
+      - '@translator.data_collector'
+      - '@debug.validator'
+      - '@sylius.context.customer'
+      - '@sylius.availability_checker.default'
+      - '@sylius.repository.product_variant'
+      - '@sylius.email_sender'
+      - '@sylius.context.locale'
+      - '@ikuzo_stock_alert.repository.stock_alert'
+      - '@ikuzo_stock_alert.factory.stock_alert'
+
+  ikuzo_stock_alert.form.extension.channel:
+    class: Ikuzo\SyliusStockAlertPlugin\Form\Extension\ChannelTypeExtension
+    tags: ['form.type_extension']
+  
+  ikuzo_stock_alert.event_subscriber.product_variant_subscriber:
+    class: Ikuzo\SyliusStockAlertPlugin\EventSubscriber\ProductVariantSubscriber
+    tags:
+      - { name: 'kernel.event_subscriber' }
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@messenger.default_bus'
+      - '@sylius.context.channel'
+
+  ikuzo_stock_alert.message_handler.send_stock_alert_handler:
+    class: Ikuzo\SyliusStockAlertPlugin\MessageHandler\SendStockAlertHandler
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@sylius.email_sender'
+    tags: ['messenger.message_handler']
+
+  ikuzo_stock_alert.listener.menu.admin:
+    class: Ikuzo\SyliusStockAlertPlugin\Menu\AdminMenuBuilder
+    tags:
+      - { name: kernel.event_listener, event: sylius.menu.admin.main, method: addItems }
+
+  ikuzo_stock_alert.twig.stock_alert_extension:
+    class: Ikuzo\SyliusStockAlertPlugin\Twig\StockAlertExtension
+    tags: ['twig.extension']
+    arguments:
+      - '@ikuzo_stock_alert.repository.stock_alert'

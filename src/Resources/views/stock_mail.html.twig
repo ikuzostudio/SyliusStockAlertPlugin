@@ -1,0 +1,9 @@
+{% block subject %}
+{% endblock %}
+
+{% block body %}
+    Hello {{ email }}!
+
+    The following product is now back in stock:
+    {{ productVariant.product.name }} - {{ productVariant.name }}
+{% endblock %}

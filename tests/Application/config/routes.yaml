@@ -1,0 +1,2 @@
+ikuzo_stock_alert_plugin:
+  resource: "@IkuzoSyliusStockAlertPlugin/Resources/config/routing.yaml"

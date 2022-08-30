@@ -1,0 +1,4 @@
+suites:
+    main:
+        namespace: Ikuzo\SyliusStockAlertPlugin
+        psr4_prefix: Ikuzo\SyliusStockAlertPlugin

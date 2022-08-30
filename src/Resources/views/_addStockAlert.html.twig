@@ -1,0 +1,9 @@
+{% if sylius.channel.stockAlertActive %}
+    {% if product.isConfigurable %}
+        <div id="notification-overlay" class="ui modal">
+            {{ render(url('ikuzo_stock_alert_add_stock_alert')) }}
+        </div>
+    {% elseif product.isSimple and not product.variants.first.isInStock and product.variants.first.isTracked %}
+        {{ render(url('ikuzo_stock_alert_add_stock_alert', {'product_variant_code': product.variants.first.code})) }}
+    {% endif %}    
+{% endif %}

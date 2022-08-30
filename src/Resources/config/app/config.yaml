@@ -1,0 +1,84 @@
+sylius_resource:
+  resources:
+    ikuzo_stock_alert.stock_alert:
+      driver: doctrine/orm
+      classes:
+        model: Ikuzo\SyliusStockAlertPlugin\Entity\StockAlert
+        interface: Ikuzo\SyliusStockAlertPlugin\Entity\StockAlertInterface
+        repository: Ikuzo\SyliusStockAlertPlugin\Repository\StockAlertRepository
+
+sylius_ui:
+  events:
+    sylius.shop.product.show.right_sidebar:
+      blocks:
+        ikuzo_stock_alert_add: '@IkuzoSyliusStockAlertPlugin/_addStockAlert.html.twig'
+    sylius.shop.product.show.add_to_cart_form:
+      blocks:
+        ikuzo_stock_alert_add: '@IkuzoSyliusStockAlertPlugin/_configurableButton.html.twig'
+    sylius.shop.layout.after_body:
+      blocks:
+        ikuzo_stock_alert_add_javascript: '@IkuzoSyliusStockAlertPlugin/_javascript.html.twig'
+    sylius.admin.channel.form.second_column_content:
+      blocks:
+        stock_alert:
+          template: '@IkuzoSyliusStockAlertPlugin/Channel/_form.html.twig'
+          priority: 5
+
+sylius_mailer:
+  emails:
+    stock_alert:
+      subject: Stock Alert
+      enabled: true
+      template: '@IkuzoSyliusStockAlertPlugin/stock_mail.html.twig'
+
+sylius_grid:
+  grids:
+    ikuzo_admin_stock_alert_subscription:
+      driver:
+        name: doctrine/orm
+        options:
+          class: Ikuzo\SyliusStockAlertPlugin\Entity\StockAlert
+          repository:
+            method: findByGroupByProductVariant
+      sorting:
+      fields:
+        image:
+          type: twig
+          label: sylius.ui.image
+          path: productVariant.product
+          options:
+              template: "@SyliusAdmin/Product/Grid/Field/image.html.twig"
+        productName:
+          type: string
+          path: productVariant.product.name
+          label: sylius.ui.name
+          sortable: ~ 
+        name:
+          type: twig
+          path: productVariant
+          label: sylius.ui.name
+          options:
+            template: "@SyliusAdmin/ProductVariant/Grid/Field/name.html.twig"
+          sortable: ~ 
+        code:
+          type: string
+          label: sylius.ui.code
+          path: productVariant.code
+          sortable: ~ 
+        stockAlerts:
+          type: twig
+          path: productVariant
+          label: ikuzo_stock_alert.ui.stock_alerts
+          options:
+            template: "@IkuzoSyliusStockAlertPlugin/Grid/Field/stockAlerts.html.twig"
+      filters:
+        code:
+          type: string
+          label: sylius.ui.code
+          options:
+            fields: [productVariant.code]
+        name:
+          type: string
+          label: sylius.ui.name
+          options:
+            fields: [productVariant.translation.name]

@@ -1,0 +1,14 @@
+
+ikuzo_stock_alert_add_stock_alert:
+  path: /stock-alert/add
+  methods: [GET, POST]
+  defaults:
+    _controller: ikuzo_stock_alert.controller.subscription:addAction
+    _sylius:
+      template: '@IkuzoSyliusStockAlertPlugin\stockAlertForm.html.twig'
+      form: 
+        type: 'Ikuzo\SyliusStockAlertPlugin\Form\StockAlertType'
+
+ikuzo_avis_verifies_admin:
+  resource: routing/admin.yaml
+  prefix: /%sylius_admin.path_name%

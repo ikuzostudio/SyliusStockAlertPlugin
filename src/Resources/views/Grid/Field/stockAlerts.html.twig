@@ -1,0 +1,2 @@
+{% set stockAlerts = get_stock_alerts(data, sylius.channel) %}
+{{ stockAlerts|map(s => s.email)|join(', ') }}

@@ -1,0 +1,14 @@
+ikuzo_stock_alert_admin_stock_alert:
+  resource: |
+    section: admin
+    alias: ikuzo_stock_alert.stock_alert
+    templates: "@SyliusAdmin\\Crud"
+    permission: true
+    redirect: update
+    grid: ikuzo_admin_stock_alert_subscription
+    vars:
+      all:
+        subheader: ikuzo_stock_alert.grid.stock_alert.subheader
+      index:
+        icon: newspaper
+  type: sylius.resource

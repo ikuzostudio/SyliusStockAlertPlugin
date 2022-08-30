@@ -1,0 +1,16 @@
+ikuzo_stock_alert:
+  ui:
+    stock_alert: Alertez moi lors du réapprovisionnement
+    stock_alerts: Alertes stock
+  form:
+    title: Stock Alert - Configuration
+    active: Activé
+    items_before_sent: Quantité avant envoi de l'alerte
+  product:
+    form_action: Alertez moi lors du réapprovisionnement
+  menu:
+    stock_alert:
+      label: Alertes stock 
+  grid:
+    stock_alert:
+      subheader: Liste des alertes stock
