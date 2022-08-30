@@ -46,3 +46,10 @@ services:
     tags: ['twig.extension']
     arguments:
       - '@ikuzo_stock_alert.repository.stock_alert'
+  
+  ikuzo_stock_alert.command.process:
+    class: Ikuzo\SyliusStockAlertPlugin\Command\StockAlertProcessCommand
+    arguments: 
+      - '@ikuzo_stock_alert.repository.stock_alert'
+      - '@messenger.default_bus'
+    tags: ['console.command']

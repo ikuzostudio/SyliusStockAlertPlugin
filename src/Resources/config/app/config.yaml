@@ -26,7 +26,7 @@ sylius_ui:
 
 sylius_mailer:
   emails:
-    stock_alert:
+    ikuzo_stock_alert:
       subject: Stock Alert
       enabled: true
       template: '@IkuzoSyliusStockAlertPlugin/stock_mail.html.twig'

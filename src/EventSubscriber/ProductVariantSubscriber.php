@@ -40,10 +40,8 @@ class ProductVariantSubscriber implements EventSubscriberInterface
                     'productVariant' => $productVariant
                 ]);
                 foreach ($arrStockAlerts as $stockAlert) {
-                    $this->bus->dispatch(new SendStockAlert($stockAlert->getEmail(), $productVariant->getId(), $this->channelContext->getChannel()->getId()));
-                    $this->em->remove($stockAlert);
+                    $this->bus->dispatch(new SendStockAlert($stockAlert->getId()));
                 }
-                $this->em->flush();
             }
         }
     }

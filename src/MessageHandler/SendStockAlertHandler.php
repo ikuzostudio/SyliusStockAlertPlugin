@@ -3,10 +3,9 @@
 namespace Ikuzo\SyliusStockAlertPlugin\MessageHandler;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Ikuzo\SyliusStockAlertPlugin\Entity\StockAlertInterface;
 use Ikuzo\SyliusStockAlertPlugin\Message\SendStockAlert;
-use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
-use Sylius\Component\Product\Model\ProductVariantInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class SendStockAlertHandler implements MessageHandlerInterface
@@ -17,30 +16,21 @@ class SendStockAlertHandler implements MessageHandlerInterface
 
     public function __invoke(SendStockAlert $message)
     {
-        $channel = $message->getChannelId();
-        $email = $message->getEmail();
-        $productVariant = $message->getProductVariantId();
+        $stockAlert = $this->em->getRepository(StockAlertInterface::class)->find($message->getStockAlertId());
 
-        $channel = $this->em->getRepository(ChannelInterface::class)->find($channel);
-        if (!$channel instanceof ChannelInterface) {
-            return false;
+        if (!$stockAlert instanceof StockAlertInterface) {
+            throw new \Exception("StockAlert #{$message->getStockAlertId()} not found", 1);
         }
-
-        $productVariant = $this->em->getRepository(ProductVariantInterface::class)->find($productVariant);
-        if (!$productVariant instanceof ChannelInterface) {
-            return false;
-        }
-
-        $recipients = [
-            $email
-        ];
 
         $options = [
-            'productVariant' => $productVariant,
-            'channel' => $channel,
-            'email' => $email
+            'productVariant' => $stockAlert->getProductVariant(),
+            'channel' => $stockAlert->getChannel(),
+            'email' => $stockAlert->getEmail()
         ];
 
-        $this->sender->send('stock_alert', $recipients, $options);
+        $this->sender->send('ikuzo_stock_alert', [$stockAlert->getEmail()], $options);
+
+        $this->em->remove($stockAlert);
+        $this->em->flush();
     }
 }
