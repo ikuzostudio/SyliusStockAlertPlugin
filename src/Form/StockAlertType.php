@@ -15,12 +15,8 @@ final class StockAlertType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                'mapped' => false
-            ])
-            ->add('product_variant_code', HiddenType::class, [
-                'mapped' => false
-            ])
+            ->add('email', EmailType::class)
+            ->add('product_variant_code', HiddenType::class)
             ->add('submit', SubmitType::class)
         ;
     }
