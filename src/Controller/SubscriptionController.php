@@ -42,11 +42,15 @@ class SubscriptionController extends AbstractController
     {
         $form = $this->createForm(StockAlertType::class);
 
+        $data = [];
+
         /** @var string|null $productVariantCode */
         $productVariantCode = $request->query->get('product_variant_code');
         if (is_string($productVariantCode)) {
-            $form->setData(['product_variant_code' => $productVariantCode]);
+            $data['product_variant_code'] = $productVariantCode;
         }
+
+        $form->setData($data);
 
         $customer = $this->customerContext->getCustomer();
         if ($customer !== null && $customer->getEmail() !== null) {
@@ -55,18 +59,25 @@ class SubscriptionController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+
             if(!$form->isValid()) {
                 $this->addFlash('error', $this->translator->trans('ikuzo_stock_alert.form.invalid_form'));
                 return $this->redirect($request->headers->get('referer'));
             }
+
             $data = $form->all();
+
             /** @var StockAlertInterface $subscription */
             $stockAlert = $this->stockAlertFactory->createNew();
+            $stockAlert->setLocale($request->getLocale());
+            
             if (!$this->channelContext->getChannel() instanceof ChannelInterface) {
                 $this->addFlash('error', $this->translator->trans('ikuzo_stock_alert.form.invalid_channel'));
                 return $this->redirect($request->headers->get('referer'));
             }
+
             $stockAlert->setChannel($this->channelContext->getChannel());
+
             if (array_key_exists('product_variant_code', $data)) {
                 $productVariantCode = $data['product_variant_code']->getData();
                 $productVariant = $this->productVariantRepository->findOneByCode($productVariantCode);
@@ -76,6 +87,7 @@ class SubscriptionController extends AbstractController
                 }
                 $stockAlert->setProductVariant($productVariant);
             }
+
             if (array_key_exists('email', $data)) {
                 $email = (string) $data['email']->getData();
                 $errors = $this->validator->validate($email, [new Email(), new NotBlank()]);

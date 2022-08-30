@@ -22,10 +22,18 @@ class SendStockAlertHandler implements MessageHandlerInterface
             throw new \Exception("StockAlert #{$message->getStockAlertId()} not found", 1);
         }
 
+        $productVariant = $stockAlert->getProductVariant();
+        $productVariant->setCurrentLocale($stockAlert->getLocale());
+
+        $product = $productVariant->getProduct();
+        $product->setCurrentLocale($stockAlert->getLocale());
+
         $options = [
-            'productVariant' => $stockAlert->getProductVariant(),
+            'productVariant' => $productVariant,
+            'product' => $product,
             'channel' => $stockAlert->getChannel(),
-            'email' => $stockAlert->getEmail()
+            'email' => $stockAlert->getEmail(),
+            'localeCode' => $stockAlert->getLocale()
         ];
 
         $this->sender->send('ikuzo_stock_alert', [$stockAlert->getEmail()], $options);

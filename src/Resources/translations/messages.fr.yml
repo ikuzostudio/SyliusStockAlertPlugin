@@ -15,3 +15,8 @@ ikuzo_stock_alert:
   grid:
     stock_alert:
       subheader: Liste des alertes stock
+  mail:
+    subject: Alerte stock
+    content:
+      first_line: Bonjour %email% !
+      second_line: "Le produit suivant est à nouveau en stock !"

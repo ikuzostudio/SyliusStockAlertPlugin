@@ -24,6 +24,8 @@ class StockAlert implements StockAlertInterface
 
     protected $customer;
 
+    protected $locale;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -72,5 +74,15 @@ class StockAlert implements StockAlertInterface
     public function setCustomer(?CustomerInterface $customer): void
     {
         $this->customer = $customer;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?string $locale): void
+    {
+        $this->locale = $locale;
     }
 }

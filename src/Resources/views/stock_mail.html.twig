@@ -1,9 +1,16 @@
+{% extends '@SyliusCore/Email/layout.html.twig' %}
+
 {% block subject %}
+    {% trans from 'messages' into localeCode %}ikuzo_stock_alert.mail.subject{% endtrans %}
 {% endblock %}
 
-{% block body %}
-    Hello {{ email }}!
+{% block content %}
+    {% trans with {'%email%': email} from 'messages' into localeCode %}ikuzo_stock_alert.mail.content.first_line{% endtrans %} <br><br>
+    {% trans from 'messages' into localeCode %}ikuzo_stock_alert.mail.content.second_line{% endtrans %} <br><br>
 
-    The following product is now back in stock:
-    {{ productVariant.product.name }} - {{ productVariant.name }}
+    {% set url = channel.hostname is not null ? 'http://' ~ channel.hostname ~ path('sylius_shop_product_show', {'slug': product.slug, '_locale': localeCode}) : url('sylius_shop_product_show', {'slug': product.slug, '_locale': localeCode}) %}
+
+    <a href="{{ url }}" target="_blank">
+        {{ product.name }}
+    </a>
 {% endblock %}
