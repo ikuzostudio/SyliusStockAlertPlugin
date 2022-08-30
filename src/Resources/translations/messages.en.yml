@@ -6,6 +6,7 @@ ikuzo_stock_alert:
     title: Stock Alert - Configuration
     active: Activated
     items_before_sent: Quantity before sending alert
+    invalid_product_variant: Product variation is invalid
   product:
     form_action: Alert me when back in stock
   menu:
