@@ -17,19 +17,17 @@ class SendStockAlertHandler implements MessageHandlerInterface
 
     public function __invoke(SendStockAlert $message)
     {
-        $channel = $message->getChannelId();
-        $email = $message->getEmail();
-        $productVariant = $message->getProductVariantId();
-
-        $channel = $this->em->getRepository(ChannelInterface::class)->find($channel);
+        $channel = $this->em->getRepository(ChannelInterface::class)->find($message->getChannelId());
         if (!$channel instanceof ChannelInterface) {
             return false;
         }
 
-        $productVariant = $this->em->getRepository(ProductVariantInterface::class)->find($productVariant);
-        if (!$productVariant instanceof ChannelInterface) {
+        $productVariant = $this->em->getRepository(ProductVariantInterface::class)->find($message->getProductVariantId());
+        if (!$productVariant instanceof ProductVariantInterface) {
             return false;
         }
+
+        $email = $message->getEmail();
 
         $recipients = [
             $email
