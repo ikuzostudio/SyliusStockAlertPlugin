@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Ikuzo\SyliusStockAlertPlugin\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Ikuzo\SyliusSendinbluePlugin\Message\SendContactToSendinblue;
-use Ikuzo\SyliusStockAlertPlugin\Entity\StockAlert;
 use Ikuzo\SyliusStockAlertPlugin\Entity\StockAlertInterface;
 use Ikuzo\SyliusStockAlertPlugin\Message\SendStockAlert;
 use Sylius\Component\Channel\Context\ChannelContextInterface;

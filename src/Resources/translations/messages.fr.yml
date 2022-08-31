@@ -7,6 +7,8 @@ ikuzo_stock_alert:
     active: Activé
     items_before_sent: Quantité avant envoi de l'alerte
     invalid_product_variant: Variation du produit invalide
+    valid_form: Vous recevrez un mail de notification lors du réapprovisionnement du produit.
+    invalid_form: Le formulaire est invalide.
   product:
     form_action: Alertez moi lors du réapprovisionnement
   menu:

@@ -2,6 +2,7 @@
 
 namespace Ikuzo\SyliusStockAlertPlugin\Controller;
 
+use Ikuzo\SyliusStockAlertPlugin\EligibilityChecker\StockAlertEligibilityCheckerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Ikuzo\SyliusStockAlertPlugin\Form\StockAlertType;
@@ -34,6 +35,7 @@ class SubscriptionController extends AbstractController
         private LocaleContextInterface $localeContext,
         private RepositoryInterface $stockAlertRepository,
         private FactoryInterface $stockAlertFactory,
+        private StockAlertEligibilityCheckerInterface $newStockAlertEligibilityChecker
     )
     {
     }
@@ -109,8 +111,15 @@ class SubscriptionController extends AbstractController
                 $this->addFlash('error', $this->translator->trans('ikuzo_stock_alert.form.invalid_form'));
                 return $this->redirect($request->headers->get('referer'));
             }
-            $this->stockAlertRepository->add($stockAlert);
-            return $this->redirect($request->headers->get('referer'));
+
+            if ($this->newStockAlertEligibilityChecker->isEligible($stockAlert)) {
+                $this->stockAlertRepository->add($stockAlert);
+                $this->addFlash('success', $this->translator->trans('ikuzo_stock_alert.form.valid_form'));
+                return $this->redirect($request->headers->get('referer'));
+            } else {
+                $this->addFlash('error', $this->translator->trans('ikuzo_stock_alert.form.invalid_form'));
+                return $this->redirect($request->headers->get('referer'));
+            }
         }
 
         return $this->render(

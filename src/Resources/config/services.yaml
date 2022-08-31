@@ -15,6 +15,7 @@ services:
       - '@sylius.context.locale'
       - '@ikuzo_stock_alert.repository.stock_alert'
       - '@ikuzo_stock_alert.factory.stock_alert'
+      - '@ikuzo_stock_alert.new_stock_alert_eligibility_checker'
 
   ikuzo_stock_alert.form.extension.channel:
     class: Ikuzo\SyliusStockAlertPlugin\Form\Extension\ChannelTypeExtension
@@ -52,4 +53,24 @@ services:
     arguments: 
       - '@ikuzo_stock_alert.repository.stock_alert'
       - '@messenger.default_bus'
+      - '@ikuzo_stock_alert.stock_alert_eligibility_checker'
     tags: ['console.command']
+
+  ikuzo_stock_alert.stock_alert_eligibility_checker:
+    class: Ikuzo\SyliusStockAlertPlugin\EligibilityChecker\CompositeStockAlertEligibilityChecker
+    arguments: [!tagged { tag: 'ikuzo_stock_alert.stock_alert_eligibility.checker' }]
+
+  ikuzo_stock_alert.new_stock_alert_eligibility_checker:
+    class: Ikuzo\SyliusStockAlertPlugin\EligibilityChecker\CompositeNewStockAlertEligibilityChecker
+    arguments: [!tagged { tag: 'ikuzo_stock_alert.new_stock_alert_eligibility.checker' }]
+
+  ikuzo_stock_alert.stock_alert_eligibility_checker.stock_alert_channel:
+    class: Ikuzo\SyliusStockAlertPlugin\EligibilityChecker\StockAlertChannelChecker
+    tags: [
+      'ikuzo_stock_alert.stock_alert_eligibility.checker',
+      'ikuzo_stock_alert.new_stock_alert_eligibility.checker'
+    ]
+
+  ikuzo_stock_alert.stock_alert_eligibility_checker.stock_alert_product_variant:
+    class: Ikuzo\SyliusStockAlertPlugin\EligibilityChecker\StockAlertProductVariantChecker
+    tags: ['ikuzo_stock_alert.stock_alert_eligibility.checker']
