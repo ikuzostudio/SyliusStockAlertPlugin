@@ -58,22 +58,3 @@ class Channel extends BaseChannel implements StockAlertChannelInterface
     use StockAlertChannelTrait;
 }
 ```
-
-To further configure the mail template, use the following:
-```yaml
-sylius_mailer:
-  emails:
-    stock_alert:
-      subject: Stock Alert
-      enabled: true
-      template: '@IkuzoSyliusStockAlertPlugin/stock_mail.html.twig'
-```
-
-Create a migration and run it
-```bash
-bin/console make:migration
-bin/console doctrine:migration:migrate
-```
-
-Go in the admin panel and enable the Stock Alerts for the wanted channels
-
