@@ -21,7 +21,7 @@ Add plugin dependencies to your `config/bundles.php` file:
 ```php
 return [
   // ...
-  Ikuzo\SyliusStockAlertPlugin\IkuzoSyliusStockAlertlugin::class => ['all' => true],
+  Ikuzo\SyliusStockAlertPlugin\IkuzoSyliusStockAlertPlugin::class => ['all' => true],
 ];
 ```
 
@@ -32,7 +32,7 @@ Import required config in your `config/packages/_sylius.yaml` file:
 
 imports:
   ...
-  - { resource: "@IkuzoSyliusStockAlertlugin/Resources/config/app/config.yaml"}
+  - { resource: "@IkuzoSyliusStockAlertPlugin/Resources/config/app/config.yaml"}
 ```
 
 Add routes in `config/routes.yaml`
@@ -41,10 +41,7 @@ Add routes in `config/routes.yaml`
 # config/routes.yaml
 
 ikuzo_stock_alert_routes:
-    resource: "@IkuzoSyliusStockAlertlugin/Resources/config/routes.yaml"
-    prefix: /{_locale}
-    requirements:
-        _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
+    resource: "@IkuzoSyliusStockAlertPlugin/Resources/config/routing.yaml"
 ```
 
 Add the StockAlertChannelInterface to the Channel model and implement it with the StockAlertChannelChannelTrait
